@@ -1,0 +1,60 @@
+.window {
+  position: fixed;
+  z-index: 10;
+  width: clamp(560px, 52vw, 860px);
+  border-radius: 14px;
+  border: 1px solid rgba(226, 215, 244, 0.1);
+  background: var(--color-surface-glass);
+  box-shadow:
+    0 0 0 1px rgba(226, 215, 244, 0.04),
+    0 24px 64px rgba(0, 0, 0, 0.5);
+  // Bloque la sélection de texte pendant le drag
+  user-select: none;
+}
+
+// --- Header ---------------------------------------------------------------
+
+.window__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 42px;
+  padding: 0 14px;
+  background: var(--color-surface-header);
+  border-radius: 14px 14px 0 0;
+  border-bottom: 1px solid rgba(226, 215, 244, 0.07);
+  cursor: default;
+}
+
+.window__dots {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+
+  // Miroir invisible pour centrer le titre sans JS
+  &--ghost {
+    visibility: hidden;
+  }
+}
+
+.window__dot {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: rgba(226, 215, 244, 0.15);
+}
+
+.window__title {
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: lowercase;
+  color: var(--color-text-secondary);
+}
+
+// --- Body -----------------------------------------------------------------
+
+.window__body {
+  padding: 48px;
+  /* header = 42px → body complète jusqu'à ~65 % du viewport */
+  min-height: calc(65vh - 42px);
+}

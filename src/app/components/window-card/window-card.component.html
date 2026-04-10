@@ -1,0 +1,27 @@
+<div
+  class="window"
+  #card
+  [style.left.px]="x()"
+  [style.top.px]="y()"
+>
+  <!-- Barre de titre — zone de drag -->
+  <header class="window__header">
+    <div class="window__dots" aria-hidden="true">
+      <span class="window__dot"></span>
+      <span class="window__dot"></span>
+      <span class="window__dot"></span>
+    </div>
+    <span class="window__title">home</span>
+    <!-- Espace miroir pour centrer le titre optiquement -->
+    <div class="window__dots window__dots--ghost" aria-hidden="true">
+      <span class="window__dot"></span>
+      <span class="window__dot"></span>
+      <span class="window__dot"></span>
+    </div>
+  </header>
+
+  <!-- Corps — contenu projeté via ng-content -->
+  <div class="window__body">
+    <ng-content />
+  </div>
+</div>
