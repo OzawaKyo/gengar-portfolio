@@ -1,0 +1,114 @@
+// =============================================================================
+// DESIGN TOKENS — Gengar Portfolio
+// Thème : Nuit cosmique / Pokémon Gengar
+// =============================================================================
+
+
+// -----------------------------------------------------------------------------
+// BACKGROUNDS — Fonds et dégradés principaux
+// -----------------------------------------------------------------------------
+
+/// Haut du dégradé du fond principal (ciel profond, quasi-noir violacé)
+$color-bg-deep-sky:       #110A1F;
+
+/// Bas du dégradé du fond principal (nuit Gengar, violet sombre)
+$color-bg-night:          #261442;
+
+/// Élément de décor animé en bas de page (vague spectrale)
+$color-bg-wave:           #3A2163;
+
+
+// -----------------------------------------------------------------------------
+// SURFACES — Fenêtres, modales, barres d'interface
+// -----------------------------------------------------------------------------
+
+/// Fond principal de la boîte / fenêtre modale (verre fumé sobre)
+$color-surface-glass:     #1E152B;
+
+/// Barre supérieure de la boîte / en-tête de fenêtre
+$color-surface-header:    #150E1F;
+
+
+// -----------------------------------------------------------------------------
+// TYPOGRAPHY — Textes et séparateurs
+// -----------------------------------------------------------------------------
+
+/// Texte principal, icônes, bordures fines de l'interface (lavande lunaire)
+$color-text-primary:      #E2D7F4;
+
+/// Sous-titres, texte désactivé ou secondaire
+$color-text-secondary:    #9B8BB1;
+
+
+// -----------------------------------------------------------------------------
+// ACCENTS — Illustrations, interactions, états
+// -----------------------------------------------------------------------------
+
+/// Accentuation dorée, élément fun / décoratif (lueur de l'étoile)
+$color-accent-star:       #F4C560;
+
+/// Couleur principale de la mascotte Gengar, accent primaire
+$color-accent-primary:    #6B518F;
+
+/// Détail espiègle de la mascotte, accent secondaire / état d'erreur
+$color-accent-danger:     #D45B65;
+
+
+// =============================================================================
+// CSS CUSTOM PROPERTIES
+// Exposées sur :root pour être accessibles dans tous les composants
+// =============================================================================
+
+:root {
+  // --- Backgrounds ---
+  --color-bg-deep-sky:     #{$color-bg-deep-sky};
+  --color-bg-night:        #{$color-bg-night};
+  --color-bg-wave:         #{$color-bg-wave};
+
+  // Dégradé du fond principal (utilisable directement via background)
+  --gradient-bg: linear-gradient(
+    180deg,
+    var(--color-bg-deep-sky) 0%,
+    var(--color-bg-night)    100%
+  );
+
+  // --- Surfaces ---
+  --color-surface-glass:   #{$color-surface-glass};
+  --color-surface-header:  #{$color-surface-header};
+
+  // --- Typography ---
+  --color-text-primary:    #{$color-text-primary};
+  --color-text-secondary:  #{$color-text-secondary};
+
+  // --- Accents ---
+  --color-accent-star:     #{$color-accent-star};
+  --color-accent-primary:  #{$color-accent-primary};
+  --color-accent-danger:   #{$color-accent-danger};
+}
+
+
+// =============================================================================
+// RESET & BASE
+// =============================================================================
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  background: var(--gradient-bg);
+  // Fallback si les custom properties ne sont pas supportées
+  background-color: $color-bg-night;
+  color: var(--color-text-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}

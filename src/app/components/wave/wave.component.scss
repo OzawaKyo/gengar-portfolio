@@ -1,0 +1,48 @@
+// Conteneur fixé en bas de l'écran.
+// overflow: hidden coupe la partie droite du SVG (200% de large)
+// pendant l'animation de translation.
+.wave-container {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: clamp(90px, 15vw, 180px);
+  overflow: hidden;
+  pointer-events: none;
+  // z-index: 2 — au-dessus du fond étoilé (z-index: 1), en dessous de l'interface
+  z-index: 2;
+}
+
+// Chaque couche SVG fait 200% de la largeur du conteneur (= 200vw).
+// Le viewBox 2880 représente exactement deux périodes de la vague.
+// translateX(-50%) déplace de -100vw = une période complète → boucle parfaite.
+.wave {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 200%;
+  height: 100%;
+  fill: #3A2163;
+
+  &--back {
+    opacity: 0.55;
+    // Décalage de phase via animation-delay négatif (-8s sur 24s = ~1/3 de cycle)
+    animation: wave-slide 24s linear infinite;
+    animation-delay: -8s;
+  }
+
+  &--front {
+    opacity: 1;
+    animation: wave-slide 18s linear infinite;
+  }
+}
+
+@keyframes wave-slide {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    // -50% de la largeur SVG (200vw) = -100vw = exactement une période
+    transform: translateX(-50%);
+  }
+}
