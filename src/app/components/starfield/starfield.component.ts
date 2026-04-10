@@ -21,14 +21,16 @@ interface Star {
   /** Position normalisée 0–1 : s'adapte au resize sans recalcul */
   nx: number;
   ny: number;
-  /** Rayon en pixels logiques (0.5 – 2) */
+  /** Rayon en px logiques pour les points ronds */
   radius: number;
-  isCross: boolean;
+  isSparkle: boolean;
+  /** Demi-hauteur de la branche verticale du sparkle, en px logiques */
+  sparkleSize: number;
   baseAlpha: number;
   twinkles: boolean;
   /** Fréquence de scintillement en rad/ms */
   twinkleFreq: number;
-  /** Déphasage initial pour que chaque étoile soit désynchronisée */
+  /** Déphasage initial pour désynchroniser chaque étoile */
   twinklePhi: number;
 }
 
@@ -80,8 +82,7 @@ export class StarfieldComponent {
     this.buildStars();
     this.buildShooters();
 
-    // Observer le resize du canvas (=viewport) sans rebuild des étoiles
-    // car leurs positions sont normalisées
+    // Les étoiles utilisent des positions normalisées → pas besoin de rebuild au resize
     this.observer = new ResizeObserver(() => this.resize(canvas, ctx));
     this.observer.observe(canvas);
 
@@ -115,17 +116,19 @@ export class StarfieldComponent {
 
   private buildStars(): void {
     this.stars = Array.from({ length: STAR_COUNT }, () => {
-      // Distribution biaisée vers les petites étoiles (réalisme)
+      // Distribution biaisée vers les petites étoiles (réalisme naturel)
       const t = Math.random() ** 2;
-      const radius = 0.5 + t * 1.5;
-      const isCross = radius > 1.2 && Math.random() < 0.18;
+      const radius = 1 + t * 2.5;
+      const isSparkle = Math.random() < 0.11;
 
       return {
         nx: Math.random(),
         ny: Math.random(),
         radius,
-        isCross,
-        baseAlpha: rand(0.35, 0.85),
+        isSparkle,
+        // Taille indépendante du radius des points pour plus de variété
+        sparkleSize: isSparkle ? rand(4, 10) : 0,
+        baseAlpha: rand(0.55, 1),
         twinkles: Math.random() < 0.35,
         twinkleFreq: rand(0.0005, 0.0018),
         twinklePhi: rand(0, Math.PI * 2),
@@ -136,7 +139,7 @@ export class StarfieldComponent {
   private buildShooters(): void {
     this.shooters = Array.from({ length: SHOOTER_COUNT }, (_, i) => {
       const s = this.resetShooter({} as Shooter);
-      // Échelonner les premières apparitions pour éviter qu'elles surviennent toutes en même temps
+      // Échelonner les premières apparitions
       s.cooldown = rand(1500, 5000) + i * rand(3000, 5500);
       return s;
     });
@@ -159,7 +162,7 @@ export class StarfieldComponent {
   // ---------------------------------------------------------------------------
 
   private loop(ctx: CanvasRenderingContext2D, t: number): void {
-    // Limiter dt à 50ms pour absorber les pauses (changement d'onglet, etc.)
+    // Cap à 50ms pour absorber les pauses (changement d'onglet, etc.)
     const dt = Math.min(t - this.lastTime, 50);
     this.lastTime = t;
 
@@ -177,7 +180,6 @@ export class StarfieldComponent {
 
   private drawStars(ctx: CanvasRenderingContext2D, t: number): void {
     ctx.fillStyle = `rgb(${STAR_RGB})`;
-    ctx.strokeStyle = `rgb(${STAR_RGB})`;
 
     for (const star of this.stars) {
       const x = star.nx * this.w;
@@ -191,8 +193,8 @@ export class StarfieldComponent {
 
       ctx.globalAlpha = alpha;
 
-      if (star.isCross) {
-        this.drawCross(ctx, x, y, star.radius * 2.8);
+      if (star.isSparkle) {
+        this.drawSparkle(ctx, x, y, star.sparkleSize);
       } else {
         ctx.beginPath();
         ctx.arc(x, y, star.radius, 0, Math.PI * 2);
@@ -203,14 +205,32 @@ export class StarfieldComponent {
     ctx.globalAlpha = 1;
   }
 
-  private drawCross(ctx: CanvasRenderingContext2D, x: number, y: number, half: number): void {
-    ctx.lineWidth = 0.6;
+  /**
+   * Étoile à 4 branches remplies, style cartoon/illustration.
+   *
+   * Géométrie (8 sommets alternant outer/inner) :
+   *   ov  = branche verticale (haut/bas) — la plus longue
+   *   oh  = branche horizontale (gauche/droite) — 55 % de ov (branches larges)
+   *   ir  = demi-largeur du croisement central — 20 % de ov (centre bien visible)
+   *
+   * Un ir élevé arrondit le "ventre" de chaque branche → aspect gras et cartoon.
+   */
+  private drawSparkle(ctx: CanvasRenderingContext2D, x: number, y: number, size: number): void {
+    const ov = size * 0.70;
+    const oh = size * 0.55;
+    const ir = size * 0.20;
+
     ctx.beginPath();
-    ctx.moveTo(x - half, y);
-    ctx.lineTo(x + half, y);
-    ctx.moveTo(x, y - half);
-    ctx.lineTo(x, y + half);
-    ctx.stroke();
+    ctx.moveTo(x,      y - ov);   // sommet haut
+    ctx.lineTo(x + ir, y - ir);   // inter — haut-droit
+    ctx.lineTo(x + oh, y      );   // pointe droite
+    ctx.lineTo(x + ir, y + ir);   // inter — bas-droit
+    ctx.lineTo(x,      y + ov);   // sommet bas
+    ctx.lineTo(x - ir, y + ir);   // inter — bas-gauche
+    ctx.lineTo(x - oh, y      );   // pointe gauche
+    ctx.lineTo(x - ir, y - ir);   // inter — haut-gauche
+    ctx.closePath();
+    ctx.fill();
   }
 
   // ---------------------------------------------------------------------------
@@ -223,7 +243,6 @@ export class StarfieldComponent {
         s.cooldown -= dt;
         if (s.cooldown <= 0) {
           s.active = true;
-          // Spawn aléatoire dans le quart supérieur de l'écran
           s.x = rand(0.02, 0.75) * this.w;
           s.y = rand(0.02, 0.25) * this.h;
           s.alpha = 0;
@@ -246,14 +265,13 @@ export class StarfieldComponent {
   }
 
   private drawShooter(ctx: CanvasRenderingContext2D, s: Shooter): void {
-    // Direction normalisée pour le point de départ de la traîne
     const speed = Math.hypot(s.vx, s.vy);
     const nx = s.vx / speed;
     const ny = s.vy / speed;
     const tx = s.x - nx * s.tailLen;
     const ty = s.y - ny * s.tailLen;
 
-    // Gradient : transparent à la queue, opaque à la tête
+    // Traîne : gradient transparent → opaque
     const gradient = ctx.createLinearGradient(tx, ty, s.x, s.y);
     gradient.addColorStop(0, `rgba(${STAR_RGB}, 0)`);
     gradient.addColorStop(1, `rgba(${STAR_RGB}, ${s.alpha})`);
@@ -266,6 +284,12 @@ export class StarfieldComponent {
     ctx.moveTo(tx, ty);
     ctx.lineTo(s.x, s.y);
     ctx.stroke();
+
+    // Petit sparkle à la tête de l'étoile filante
+    ctx.globalAlpha = s.alpha;
+    ctx.fillStyle = `rgb(${STAR_RGB})`;
+    this.drawSparkle(ctx, s.x, s.y, 5);
+
     ctx.restore();
   }
 }
