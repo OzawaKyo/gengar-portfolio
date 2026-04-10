@@ -1,7 +1,7 @@
 .window {
-  position: fixed;
-  z-index: 10;
-  width: clamp(560px, 52vw, 860px);
+  width: 60vw;
+  min-width: 600px;
+  max-width: 800px;
   border-radius: 14px;
   border: 1px solid rgba(226, 215, 244, 0.1);
   background: var(--color-surface-glass);
@@ -45,7 +45,7 @@
 }
 
 .window__title {
-  font-size: 11px;
+  font-size: 20px;
   letter-spacing: 0.08em;
   text-transform: lowercase;
   color: var(--color-text-secondary);
@@ -54,7 +54,9 @@
 // --- Body -----------------------------------------------------------------
 
 .window__body {
-  padding: 48px;
+  padding: 40px 48px;
   /* header = 42px → body complète jusqu'à ~65 % du viewport */
   min-height: calc(65vh - 42px);
+  display: flex;
+  flex-direction: column;
 }

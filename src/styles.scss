@@ -1,4 +1,17 @@
 // =============================================================================
+// FONTS
+// =============================================================================
+
+@font-face {
+  font-family: 'Nohemi';
+  src: url('/nohemi.ttf') format('truetype');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+
+// =============================================================================
 // DESIGN TOKENS — Gengar Portfolio
 // Thème : Nuit cosmique / Pokémon Gengar
 // =============================================================================
@@ -111,4 +124,16 @@ body {
   color: var(--color-text-primary);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+// Positionnement critique de la fenêtre principale — placé ici pour éviter
+// le flash (FOUC) : ce fichier est chargé comme CSS pur avant tout JS,
+// contrairement aux styles de composant Angular qui arrivent avec le bundle.
+app-window-card {
+  display: block;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10;
 }

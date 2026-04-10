@@ -1,0 +1,19 @@
+<section class="hero">
+  <h1 class="hero__title">hi! i'm simo</h1>
+  <p class="hero__subtitle">developer, designer and music producer</p>
+</section>
+
+<nav class="nav" aria-label="Navigation">
+  @for (item of navItems; track item.key) {
+    <a class="nav__item" [href]="'#' + item.key">
+      <img
+        class="nav__icon"
+        [ngSrc]="item.icon"
+        [alt]="item.label"
+        width="64"
+        height="64"
+      />
+      <span class="nav__label">{{ item.label }}</span>
+    </a>
+  }
+</nav>
