@@ -6,7 +6,7 @@
   bottom: 0;
   left: 0;
   width: 100%;
-  height: clamp(90px, 15vw, 180px);
+  height: 35vh;
   overflow: hidden;
   pointer-events: none;
   // z-index: 2 — au-dessus du fond étoilé (z-index: 1), en dessous de l'interface
