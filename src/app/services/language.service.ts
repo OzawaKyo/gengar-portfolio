@@ -3,12 +3,14 @@ import { Injectable, computed, signal } from '@angular/core';
 export type Lang = 'en' | 'fr';
 
 interface Translations {
+  title: string;
   subtitle: string;
   nav: Record<string, string>;
 }
 
 const TRANSLATIONS: Record<Lang, Translations> = {
   en: {
+    title: "hi! i'm simo",
     subtitle: 'developer, designer and music producer',
     nav: {
       about:   'about',
@@ -19,6 +21,7 @@ const TRANSLATIONS: Record<Lang, Translations> = {
     },
   },
   fr: {
+    title: "hi! je suis simo",
     subtitle: 'développeur, designer et producteur de musique',
     nav: {
       about:   'à propos',
