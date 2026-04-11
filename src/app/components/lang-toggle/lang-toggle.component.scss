@@ -1,0 +1,40 @@
+.lang-toggle {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 20;
+
+  display: flex;
+  align-items: center;
+  gap: 6px;
+
+  background: var(--color-surface-glass);
+  border: 1px solid rgba(226, 215, 244, 0.12);
+  border-radius: 8px;
+  padding: 6px 12px;
+  cursor: pointer;
+
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: var(--color-text-secondary);
+
+  transition: border-color 0.2s ease;
+
+  &:hover {
+    border-color: rgba(226, 215, 244, 0.25);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--color-accent-primary);
+    outline-offset: 2px;
+  }
+}
+
+.lang-toggle__sep {
+  opacity: 0.3;
+}
+
+.lang-toggle__option--active {
+  color: var(--color-text-primary);
+}

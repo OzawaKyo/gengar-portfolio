@@ -1,11 +1,19 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
 import { NgOptimizedImage } from '@angular/common';
+import { LanguageService } from '../../services/language.service';
 
 interface NavItem {
   key: string;
-  label: string;
   icon: string;
 }
+
+const NAV_ITEMS: NavItem[] = [
+  { key: 'about',   icon: '/about.webp'   },
+  { key: 'links',   icon: '/links.webp'   },
+  { key: 'work',    icon: '/work.webp'    },
+  { key: 'faq',     icon: '/faq.webp'     },
+  { key: 'contact', icon: '/contact.webp' },
+];
 
 @Component({
   selector: 'app-home',
@@ -15,11 +23,13 @@ interface NavItem {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HomeComponent {
-  protected readonly navItems: NavItem[] = [
-    { key: 'about',   label: 'about',   icon: '/about.webp'   },
-    { key: 'links',   label: 'links',   icon: '/links.webp'   },
-    { key: 'work',    label: 'work',    icon: '/work.webp'    },
-    { key: 'faq',     label: 'faq',     icon: '/faq.webp'     },
-    { key: 'contact', label: 'contact', icon: '/contact.webp' },
-  ];
+  private readonly langService = inject(LanguageService);
+  protected readonly t = this.langService.t;
+
+  protected readonly navItems = computed(() =>
+    NAV_ITEMS.map(item => ({
+      ...item,
+      label: this.t().nav[item.key],
+    }))
+  );
 }

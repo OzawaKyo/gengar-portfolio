@@ -1,0 +1,11 @@
+.gengar {
+    position: fixed;
+    bottom: 0;
+    right: 24px;
+    width: 180px;
+    height: auto;
+    z-index: 3;
+   &:hover{
+    cursor: pointer;
+   }
+}
