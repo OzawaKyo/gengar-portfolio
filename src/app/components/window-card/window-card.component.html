@@ -1,13 +1,23 @@
 <div class="window">
-  <!-- Barre de titre — zone de drag -->
-  <header class="window__header">
-    <div class="window__dots" aria-hidden="true">
-      <span class="window__dot"></span>
+  <!-- Barre de titre -->
+  <header
+    class="window__header"
+    [class.window__header--draggable]="floating()"
+    (mousedown)="onHeaderMousedown($event)"
+  >
+    <div class="window__dots" [attr.aria-hidden]="!closable() ? 'true' : null">
+      @if (closable()) {
+        <button class="window__dot window__dot--close" (click)="onClose()" aria-label="Close window"></button>
+      } @else {
+        <span class="window__dot"></span>
+      }
       <span class="window__dot"></span>
       <span class="window__dot"></span>
     </div>
-    <span class="window__title">Home</span>
-    <!-- Espace miroir pour centrer le titre optiquement -->
+
+    <span class="window__title">{{ title() }}</span>
+
+    <!-- Miroir invisible pour centrer le titre optiquement -->
     <div class="window__dots window__dots--ghost" aria-hidden="true">
       <span class="window__dot"></span>
       <span class="window__dot"></span>

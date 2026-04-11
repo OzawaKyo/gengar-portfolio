@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
 import { NgOptimizedImage } from '@angular/common';
 import { LanguageService } from '../../services/language.service';
+import { WindowsService } from '../../services/windows.service';
 
 interface NavItem {
   key: string;
@@ -23,7 +24,9 @@ const NAV_ITEMS: NavItem[] = [
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HomeComponent {
-  private readonly langService = inject(LanguageService);
+  private readonly langService    = inject(LanguageService);
+  private readonly windowsService = inject(WindowsService);
+
   protected readonly t = this.langService.t;
 
   protected readonly navItems = computed(() =>
@@ -32,4 +35,8 @@ export class HomeComponent {
       label: this.t().nav[item.key],
     }))
   );
+
+  protected openWindow(key: string): void {
+    this.windowsService.open(key);
+  }
 }
