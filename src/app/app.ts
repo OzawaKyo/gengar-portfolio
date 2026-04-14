@@ -24,21 +24,21 @@ import { WindowsService } from './services/windows.service';
 
     <!-- Cartes flottantes -->
     @if (windows.openKeys().includes('about')) {
-      <app-window-card [floating]="true" [closable]="true" [title]="lang.t().nav['about']" (closed)="windows.close('about')">
+      <app-window-card [floating]="true" [closable]="true" [title]="lang.t().nav['about']" [originX]="0.62" [originY]="0.18" (closed)="windows.close('about')">
         <app-about />
       </app-window-card>
     }
     @if (windows.openKeys().includes('links')) {
-      <app-window-card [floating]="true" [closable]="true" [title]="lang.t().nav['links']" (closed)="windows.close('links')" />
+      <app-window-card [floating]="true" [closable]="true" [title]="lang.t().nav['links']" [originX]="0.25" [originY]="0.22" (closed)="windows.close('links')" />
     }
     @if (windows.openKeys().includes('work')) {
-      <app-window-card [floating]="true" [closable]="true" [title]="lang.t().nav['work']" (closed)="windows.close('work')" />
+      <app-window-card [floating]="true" [closable]="true" [title]="lang.t().nav['work']"  [originX]="0.70" [originY]="0.60" (closed)="windows.close('work')" />
     }
     @if (windows.openKeys().includes('faq')) {
-      <app-window-card [floating]="true" [closable]="true" [title]="lang.t().nav['faq']" (closed)="windows.close('faq')" />
+      <app-window-card [floating]="true" [closable]="true" [title]="lang.t().nav['faq']"   [originX]="0.30" [originY]="0.65" (closed)="windows.close('faq')" />
     }
     @if (windows.openKeys().includes('contact')) {
-      <app-window-card [floating]="true" [closable]="true" [title]="lang.t().nav['contact']" (closed)="windows.close('contact')" />
+      <app-window-card [floating]="true" [closable]="true" [title]="lang.t().nav['contact']" [originX]="0.55" [originY]="0.75" (closed)="windows.close('contact')" />
     }
 
     <img

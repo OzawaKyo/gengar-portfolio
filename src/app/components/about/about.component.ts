@@ -9,5 +9,5 @@ import { NgOptimizedImage } from '@angular/common';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AboutComponent {
-  protected readonly profileImage = '/profiDle.png';
+  protected readonly profileImage = '/profissle.png';
 }
