@@ -35,7 +35,7 @@ const TRANSLATIONS: Record<Lang, Translations> = {
 
 @Injectable({ providedIn: 'root' })
 export class LanguageService {
-  readonly current = signal<Lang>('fr');
+  readonly current = signal<Lang>('en');
   readonly t = computed(() => TRANSLATIONS[this.current()]);
 
   toggle(): void {

@@ -1,11 +1,37 @@
 .gengar {
-    position: fixed;
-    bottom: 0;
-    right: 24px;
-    width: 180px;
-    height: auto;
-    z-index: 3;
-   &:hover{
+  position: fixed;
+  bottom: 15px;
+  right: 24px;
+  width: 160px;
+  height: 160px;
+  object-fit: contain;
+  z-index: 3;
+
+  &:hover {
     cursor: pointer;
-   }
+  }
+
+  &--headphones {
+    width: 140px;
+    height: 140px;
+  }
+
+  &--flip-out {
+    animation: gengar-hole-in 0.45s cubic-bezier(0.55, 0, 1, 0.45) forwards;
+  }
+
+  &--flip-in {
+    animation: gengar-hole-out 0.55s cubic-bezier(0.2, 1.6, 0.4, 1) forwards;
+  }
+}
+
+@keyframes gengar-hole-in {
+  0%   { transform: scale(1)    rotate(0deg);    opacity: 1; }
+  100% { transform: scale(0)    rotate(-270deg); opacity: 0; }
+}
+
+@keyframes gengar-hole-out {
+  0%   { transform: scale(0)    rotate(270deg);  opacity: 0; }
+  60%  { transform: scale(1.15) rotate(-8deg);   opacity: 1; }
+  100% { transform: scale(1)    rotate(0deg);    opacity: 1; }
 }
